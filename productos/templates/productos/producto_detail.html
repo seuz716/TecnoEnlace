@@ -1,0 +1,403 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-4">
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="navbar-brand" href="/">
+                <img src="{% static 'images/logo.png' %}" 
+                     alt="Logo" 
+                     width="40" 
+                     height="40" 
+                     class="d-inline-block align-top me-2 logo-hover"
+                     loading="lazy">
+                Tienda Online
+            </a></li>
+            <li class="breadcrumb-item">
+    <a href="{% url 'productos:categoria-list' %}">{{ object.categoria.nombre }}</a>
+</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ object.nombre }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Carrusel de imágenes con video, preloader y vista 360° (bonus) -->
+        <div class="col-md-6">
+            {% if object.imagen or object.imagenes.all %}
+            <div id="productoCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2500" data-bs-pause="hover">
+                <!-- Indicadores del carrusel -->
+                <div class="carousel-indicators">
+                    {% if object.imagen %}
+                        <button type="button" data-bs-target="#productoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        {% for img in object.imagenes.all %}
+                            <button type="button" data-bs-target="#productoCarousel" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter|add:1 }}"></button>
+                        {% endfor %}
+                    {% else %}
+                        {% for img in object.imagenes.all %}
+                            <button type="button" data-bs-target="#productoCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <!-- Elementos del carrusel -->
+                <div class="carousel-inner">
+                    {% if object.imagen %}
+                        <div class="carousel-item active">
+                            <img src="{{ object.imagen.url }}" class="d-block w-100" alt="{{ object.nombre }}" loading="lazy">
+                        </div>
+                        {% for img in object.imagenes.all %}
+                            <div class="carousel-item">
+                                <img src="{{ img.imagen.url }}" class="d-block w-100" alt="{{ object.nombre }} - Imagen {{ forloop.counter }}" loading="lazy">
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for img in object.imagenes.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ img.imagen.url }}" class="d-block w-100" alt="{{ object.nombre }} - Imagen {{ forloop.counter }}" loading="lazy">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- Bonus: Video demostrativo en el carrusel -->
+                    {% if object.video_url %}
+                    <div class="carousel-item">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="{{ object.video_url }}" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- Controles del carrusel -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#productoCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productoCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+            <!-- Miniaturas de navegación -->
+            <div class="row mt-3 carousel-thumbnails">
+                {% for img in object.imagenes.all|slice:":4" %}
+                <div class="col-3">
+                    <img src="{{ img.imagen.url }}" class="img-thumbnail cursor-pointer" onclick="$('#productoCarousel').carousel({{ forloop.counter0 }})">
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <div class="alert alert-warning">No hay imágenes disponibles para este producto.</div>
+            {% endif %}
+        </div>
+
+        <!-- Detalles del producto -->
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ object.nombre }}</h1>
+            <!-- Indicador de stock urgente -->
+            <div class="alert alert-warning d-flex align-items-center mb-3">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                ¡Últimas {{ object.stock }} unidades disponibles!
+            </div>
+            <p class="text-muted mb-1"><strong>Categoría:</strong> {{ object.categoria.nombre }}</p>
+           <div class="card border-primary mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="text-danger mb-0">$ {{ object.precio }}</h2>
+      <span class="badge bg-success">30% OFF</span>
+    </div>
+    <div class="mt-3">
+      <form 
+        class="add-to-cart-form d-inline" 
+        data-producto-id="{{ object.id }}"
+        method="post"
+      >
+        {% csrf_token %}
+        {# si no permites elegir cantidad, déjalo fijo en 1 #}
+        <input type="hidden" name="cantidad" value="1">
+        <button 
+          type="submit" 
+          class="btn btn-lg btn-danger ms-3 pulse-animation"
+        >
+          <i class="fas fa-cart-plus me-2"></i> COMPRAR AHORA
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+            <p class="mb-3">{{ object.descripcion }}</p>
+            <h5>Características</h5>
+            <p>{{ object.caracteristicas }}</p>
+            <!-- Sección de características interactivas -->
+            <div class="accordion mb-4">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#featuresCollapse">
+                            Especificaciones técnicas
+                        </button>
+                    </h3>
+                    <div id="featuresCollapse" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <ul class="list-group list-group-flush">
+                                {% for feature in object.get_features %}
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>{{ feature.name }}</span>
+                                    <strong>{{ feature.value }}</strong>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Interacción en cantidad y Formulario para agregar al carrito -->
+            <div class="mt-4">
+                <form class="add-to-cart-form d-flex align-items-center" data-producto-id="{{ object.id }}">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="decrementQuantity('{{ object.id }}')">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" name="cantidad" id="cantidad_{{ object.id }}" value="1" min="1" class="form-control form-control-sm mx-2" style="width:80px;">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="incrementQuantity('{{ object.id }}')">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary ms-3">
+                        <i class="fas fa-cart-plus me-1"></i> Agregar al Carrito
+                    </button>
+                </form>
+            </div>
+            <!-- Botón de comparación de productos (bonus) -->
+           
+        </div>
+    </div>
+
+    <!-- Elementos de confianza -->
+    <div class="trust-badges my-4 border-top pt-3">
+        <div class="d-flex justify-content-around">
+            <div class="text-center">
+                <i class="fas fa-shield-alt fa-2x text-success"></i>
+                <div class="small">Garantía 12 meses</div>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-truck fa-2x text-primary"></i>
+                <div class="small">Envío a todo el Pais</div>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-lock fa-2x text-danger"></i>
+                <div class="small">Pago seguro</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección "Clientes que vieron esto también compraron" (bonus) -->
+
+<!-- Sección "Clientes que vieron esto también compraron" -->
+{% if related_products %}
+    <div class="related-products my-4">
+        <h4 class="mb-3">Clientes que vieron esto también compraron</h4>
+        <div class="row">
+            {% for product in related_products %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ product.imagen.url }}" class="card-img-top" alt="{{ product.nombre }}">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title">{{ product.nombre }}</h6>
+                            <p class="card-text">$ {{ product.precio }}</p>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-sm btn-outline-primary mt-auto">Ver producto</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+
+    <!-- Mostrar reviews con estrellas (bonus) -->
+    <div class="reviews-section my-4">
+        <h4 class="mb-3">Opiniones de clientes</h4>
+        {% for review in object.reviews.all %}
+        <div class="review mb-3">
+            <strong>{{ review.user.username }}</strong>
+            <div>
+                {% for i in "12345"|slice:":review.stars"|make_list %}
+                <i class="fas fa-star text-warning"></i>
+                {% endfor %}
+                {% for i in "12345"|slice:"review.stars:"|make_list %}
+                <i class="far fa-star text-warning"></i>
+                {% endfor %}
+            </div>
+            <p>{{ review.comment }}</p>
+        </div>
+        {% empty %}
+        <p class="text-muted">Aún no hay reseñas para este producto.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Integración con redes sociales -->
+    <div class="social-sharing my-4">
+        <h5>Compartir producto</h5>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ object.nombre }}" target="_blank" class="btn btn-info">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}" target="_blank" class="btn btn-secondary">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+    </div>
+
+    <!-- Notificación de precio histórico (bonus) -->
+    {% if object.historical_price %}
+    <div class="alert alert-info my-4">
+        Precio anterior: $ {{ object.historical_price }}
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+/* Carrusel: velocidad y efecto zoom */
+.carousel-item {
+    transition: transform 0.6s ease-in-out;
+}
+.carousel-inner:hover img {
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+}
+
+/* Botón pulsante */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Feedback visual en cantidad */
+.quantity-changed {
+    border: 2px solid #007bff;
+}
+
+/* Toast notifications */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1050;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+.toast-notification.error {
+    background: rgba(255, 0, 0, 0.8);
+}
+.toast-notification.success {
+    background: rgba(0, 128, 0, 0.8);
+}
+
+/* Visualización responsiva mejorada */
+@media (max-width: 768px) {
+    .carousel-inner {
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .product-details-section {
+        position: sticky;
+        top: 20px;
+        background: white;
+        padding: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-top: -30px;
+        z-index: 2;
+    }
+}
+</style>
+
+<!-- Scripts -->
+<script>
+// Funciones para la interacción en cantidad con feedback táctil
+function incrementQuantity(productId) {
+    const input = document.getElementById('cantidad_' + productId);
+    input.value = parseInt(input.value) + 1;
+    input.classList.add('quantity-changed');
+    setTimeout(() => input.classList.remove('quantity-changed'), 200);
+}
+
+function decrementQuantity(productId) {
+    const input = document.getElementById('cantidad_' + productId);
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+        input.classList.add('quantity-changed');
+        setTimeout(() => input.classList.remove('quantity-changed'), 200);
+    }
+}
+
+// Feedback visual al agregar al carrito con toast notification
+function showMessage(message, isError = false) {
+    const toast = document.createElement('div');
+    toast.className = `toast-notification ${isError ? 'error' : 'success'}`;
+    toast.innerHTML = `
+        <i class="fas fa-${isError ? 'times-circle' : 'check-circle'} me-2"></i>
+        ${message}
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Manejo del formulario de "Agregar al Carrito"
+document.querySelectorAll('.add-to-cart-form').forEach(function(form) {
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var productoId = form.getAttribute('data-producto-id');
+        var cantidad = form.querySelector('input[name="cantidad"]').value;
+        var csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        var url = "{% url 'cart:add' 0 %}".replace('0', productoId);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin',
+            body: new URLSearchParams({
+                'cantidad': cantidad,
+                'csrfmiddlewaretoken': csrfToken
+            })
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            if (data.success) {
+                var cartCountElem = document.getElementById('cartCount');
+                if (cartCountElem) {
+                    cartCountElem.innerText = data.cart_count;
+                }
+                showMessage("Producto agregado al carrito");
+            } else {
+                showMessage("Hubo un error al agregar el producto.", true);
+            }
+        })
+        .catch(function(error) {
+            console.error('Error en la solicitud:', error);
+            showMessage("Error en la solicitud.", true);
+        });
+    });
+});
+</script>
+{% endblock %}

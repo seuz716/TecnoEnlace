@@ -1,0 +1,47 @@
+tienda/
+├── cart/                       # App para el carrito de compras
+│   ├── migrations/             
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── views.py
+├── productos/                   # App para la gestión de productos
+│   ├── migrations/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── views.py
+	├── templates
+		├── productos_list.html 
+├── static/                     # Archivos estáticos
+│   ├── css/
+│   │   ├── styles.css
+│   ├── js/
+│   │   ├── scripts.js
+│   ├── images/
+├── templates/                  # Plantillas HTML compartidas
+│   ├── base.html
+│   ├── includes/
+│   │   ├── navbar.html
+		templates/
+├── base.html
+├── includes/
+│   ├── navbar.html
+│   ├── footer.html
+│   ├── scripts.html
+│   └── head.html
+
+├── tienda/                     # Configuración general del proyecto
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+├── db.sqlite3                  # Base de datos SQLite (puedes cambiarla a MySQL)
+├── manage.py 

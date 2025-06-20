@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Registro de Usuario</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Nombre de usuario</label>
+                            <input type="text" name="username" class="form-control" required id="id_username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Correo electrónico</label>
+                            <input type="email" name="email" class="form-control" required id="id_email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label">Contraseña</label>
+                            <input type="password" name="password1" class="form-control" required id="id_password1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password2" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" name="password2" class="form-control" required id="id_password2">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

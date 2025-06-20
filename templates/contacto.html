@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mb-4">Contáctanos</h1>
+            <p class="lead">
+                Si deseas ejercer tus derechos de acceso, corrección, supresión o actualización de tus datos personales según la <strong>Ley 1581 de 2012</strong> de protección de datos en Colombia, no dudes en comunicarte con nosotros.
+            </p>
+
+            <div class="mt-4">
+                <p>
+                    <strong>📧 Correo electrónico:</strong><br>
+                    <a href="mailto:cenanabad@gmail.com" class="text-decoration-none">cenanabad@gmail.com</a>
+                </p>
+                <p>
+                    <strong>📱 WhatsApp:</strong><br>
+                    <a href="https://wa.me/573166710912" class="btn btn-success btn-lg" target="_blank">
+                        <i class="bi bi-whatsapp"></i> Escríbenos al 316 671 0912
+                    </a>
+                </p>
+            </div>
+
+            <div class="mt-5">
+                <a href="{% url 'politica-privacidad' %}" class="btn btn-outline-secondary">
+                    Ver Política de Privacidad
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

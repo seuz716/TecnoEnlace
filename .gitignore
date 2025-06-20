@@ -1,0 +1,42 @@
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entorno virtual
+env/
+venv/
+env_linux/
+env_linux/
+# Archivos de configuración del entorno
+*.env
+*.local
+
+# Archivos de caché
+db.sqlite3
+*.log
+
+# Configuración del IDE (VSCode, PyCharm)
+.vscode/
+.idea/
+
+# Archivos de migración que ya están aplicados
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Archivos estáticos y multimedia generados
+staticfiles/
+
+
+# Archivos de compilación
+*.pyc
+*.pyo
+
+# Configuración de Git
+.git/
+.DS_Store
+
+# Archivos de node_modules (si usas npm o yarn)
+node_modules/
+package-lock.json
+yarn.lock

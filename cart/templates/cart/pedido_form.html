@@ -1,0 +1,113 @@
+{# pedido_form.html #}
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Realizar Pedido - Tienda Online{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  {% if pedido_exitoso %}
+    <div class="alert alert-success text-center py-5 success-message shadow-lg rounded-4">
+      <i class="fa-solid fa-circle-check fa-4x text-success mb-4"></i>
+      <h2 class="fw-bold">¡Gracias por tu pedido! 💖</h2>
+      <p class="lead">Estamos felices de tenerte con nosotros. Tu pedido está en camino. 🚚✨</p>
+      <p>¡Esperamos verte pronto de nuevo!</p>
+    </div>
+  {% else %}
+    <div class="card card-gradient p-4">
+      <div class="card-body px-4 py-5">
+        <h1 class="mb-4 text-center fw-bold">Nuevo Pedido</h1>
+        
+        <form method="post" class="needs-validation" novalidate>
+          {% csrf_token %}
+          
+          <div class="row g-3">
+            {% for field in form %}
+              <div class="col-12 {% if field.name != 'direccion' %}col-md-6{% endif %}">
+                <div class="form-floating">
+                  {% render_field field class+="form-control" placeholder=field.label %}
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                  
+                  {% if field.help_text %}
+                    <div class="form-text text-muted mt-2">
+                      <i class="fas fa-info-circle me-2"></i>{{ field.help_text }}
+                    </div>
+                  {% endif %}
+                  
+                  {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">
+                      {{ error }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="text-center mt-5">
+            <button type="submit" class="btn btn-primary btn-lg btn-animate px-5 py-3">
+              <i class="fa-solid fa-paper-plane me-2"></i>Confirmar Pedido
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .card-gradient {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border: none;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+    border-radius: 1.5rem;
+  }
+
+  .btn-animate {
+    transition: all 0.3s ease-in-out;
+    min-width: 200px;
+  }
+
+  .btn-animate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+  }
+
+  .form-floating textarea.form-control {
+    height: 100px !important;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Validación de formulario
+  const forms = document.querySelectorAll('.needs-validation');
+  
+  Array.prototype.slice.call(forms).forEach(function(form) {
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+
+  // Máscara para teléfono
+  const phoneField = document.querySelector('[name="telefono"]');
+  if (phoneField) {
+    phoneField.addEventListener('input', function(e) {
+      e.target.value = e.target.value
+        .replace(/\D/g, '')
+        .replace(/(\d{2})(\d)/, '+$1 $2')
+        .replace(/(\d)(\d{4})(\d{4})/, '$1 $2 $3');
+    });
+  }
+});
+</script>
+{% endblock %}

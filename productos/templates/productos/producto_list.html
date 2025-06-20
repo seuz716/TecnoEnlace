@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}Catálogo de Productos{% endblock %}
+
+{% block content %}
+<div class="container py-4 fade-in">
+    <!-- Filtros Avanzados con Nuevo Diseño -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between">
+                        <!-- Contenedor Izquierdo: Filtros -->
+                        <div class="d-flex flex-wrap gap-3 align-items-center">
+                            <span class="fw-bold text-muted">Filtrar por:</span>
+                            
+                            <!-- Filtro de Precio Mejorado -->
+                            <div class="position-relative">
+                                <select name="priceFilter" 
+                                        class="form-select form-select-sm border-primary" 
+                                        style="min-width: 180px" 
+                                        id="priceFilter" 
+                                        aria-label="Filtrar por precio">
+                                    <option value="">Todos los precios</option>
+                                    <option value="asc" {% if request.GET.priceFilter == 'asc' %}selected{% endif %}>Menor a Mayor</option>
+                                    <option value="desc" {% if request.GET.priceFilter == 'desc' %}selected{% endif %}>Mayor a Menor</option>
+                                </select>
+                                <div class="filter-spinner spinner-border spinner-border-sm text-primary d-none"></div>
+                            </div>
+                            
+                            <!-- Dropup para Categorías -->
+                            <div class="dropup">  <!-- Cambiado a dropup -->
+                                <button class="btn btn-outline-primary dropdown-toggle" 
+                                        type="button" 
+                                        id="categoriaDropdown" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false"
+                                        aria-haspopup="true">
+                                    <i class="fas fa-filter me-2"></i>
+                                    {% if request.GET.categoria %}
+                                        {% for categoria in categorias %}
+                                            {% if categoria.slug == request.GET.categoria %}
+                                                {{ categoria.nombre }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        Todas las categorías
+                                    {% endif %}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="categoriaDropdown">
+                                    <li>
+                                        <a class="dropdown-item {% if not request.GET.categoria %}active{% endif %} categoria-link" 
+                                           href="?{% if request.GET.priceFilter %}priceFilter={{ request.GET.priceFilter }}{% endif %}">
+                                            <i class="fas fa-layer-group me-2"></i>Todas las Categorías
+                                        </a>
+                                    </li>
+                                    {% for categoria in categorias %}
+                                    <li>
+                                        <a class="dropdown-item categoria-link {% if categoria.slug == request.GET.categoria %}active{% endif %}" 
+                                           href="?categoria={{ categoria.slug }}{% if request.GET.priceFilter %}&priceFilter={{ request.GET.priceFilter }}{% endif %}">
+                                            <i class="{{ categoria.icono }} me-2"></i>
+                                            {{ categoria.nombre }}
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Botón Flotante para Nuevo Producto -->
+                        <div class="dropup">  <!-- Dropup para el botón de nuevo -->
+                            <button class="btn btn-success rounded-pill px-4" 
+                                    type="button" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false">
+                                <i class="fas fa-plus me-2"></i>Nuevo Producto
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'productos:producto-create' %}">
+                                        <i class="fas fa-box-open me-2"></i>Crear Nuevo Producto
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'productos:categoria-create' %}">
+                                        <i class="fas fa-tag me-2"></i>Nueva Categoría
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spinner de Carga Mejorado -->
+    <div id="loadingSpinner" class="d-none text-center my-4">
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="text-muted mt-2">Buscando productos...</p>
+    </div>
+
+    <!-- Grid de Productos con Efecto Hover -->
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4" id="productGrid">
+        {% include 'productos/_product_gridAdm.html' with productos=productos %}
+    </div>
+</div>
+
+<style>
+    .dropdown-menu-dark {
+        background-color: #2c3034;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dropdown-item {
+        transition: all 0.2s ease;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #3d4145;
+        transform: translateX(5px);
+    }
+    
+    .spinner-grow {
+        width: 3rem;
+        height: 3rem;
+    }
+    /* Animaciones mejoradas */
+.card {
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.fade-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Spinner de carga */
+.filter-spinner {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const priceFilter = document.getElementById('priceFilter');
+    const categoriaLinks = document.querySelectorAll('.categoria-link');
+    const productGrid = document.getElementById('productGrid');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const filterSpinner = document.querySelector('.filter-spinner');
+    let debounceTimer;
+
+    // Configurar Intersection Observer
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -100px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+            }
+        });
+    }, observerOptions);
+
+    // Función para aplicar filtros
+    const applyFilters = debounce(async () => {
+        try {
+            toggleLoading(true);
+            const params = new URLSearchParams(window.location.search);
+            params.set('priceFilter', priceFilter.value);
+            
+            loadingSpinner.classList.remove('d-none');
+            
+            const response = await fetch(`{% url 'productos:filtrar_productos_adm' %}?${params.toString()}`);
+            if (!response.ok) throw new Error('Error en la respuesta');
+            
+            const data = await response.json();
+            productGrid.innerHTML = data.html;
+            
+            // Reiniciar observer para nuevas tarjetas
+            productGrid.querySelectorAll('.card').forEach(card => {
+                card.style.opacity = "0";
+                card.style.transform = "translateY(20px)";
+                observer.observe(card);
+            });
+            
+            window.history.pushState({}, '', `?${params.toString()}`);
+            showToast('Filtros aplicados correctamente', 'success');
+            
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('Error al aplicar filtros', 'danger');
+        } finally {
+            toggleLoading(false);
+            loadingSpinner.classList.add('d-none');
+        }
+    }, 300);
+
+    // Helpers
+    function toggleLoading(show) {
+        filterSpinner.classList.toggle('d-none', !show);
+        priceFilter.disabled = show;
+    }
+
+    function debounce(func, delay) {
+        return (...args) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func(...args), delay);
+        };
+    }
+
+    function showToast(message, type) {
+        // Implementar lógica de toast aquí
+        console.log(`${type}: ${message}`);
+    }
+
+    // Event Listeners
+    priceFilter.addEventListener('change', applyFilters);
+    
+    categoriaLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = new URL(link.href);
+            const params = new URLSearchParams(url.search);
+            params.set('priceFilter', priceFilter.value);
+            window.history.pushState({}, '', `?${params.toString()}`);
+            applyFilters();
+        });
+    });
+
+    // Inicializar observador
+    productGrid.querySelectorAll('.card').forEach(card => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = "all 0.4s ease";
+        observer.observe(card);
+    });
+});
+</script>
+
+{% endblock %}

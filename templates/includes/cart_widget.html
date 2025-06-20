@@ -1,0 +1,11 @@
+<div class="cart-widget position-fixed bottom-0 end-0 m-3 p-3 bg-white shadow rounded" style="width: 300px; z-index: 1050;">
+  <h5>Carrito</h5>
+  <ul id="cart-items" class="list-unstyled">
+    {% for item in items %}
+      <li>{{ item.producto.nombre }} ({{ item.cantidad }})</li>
+    {% empty %}
+      <li>Carrito vacío</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'cart:list' %}" class="btn btn-primary w-100">Ver Carrito</a>
+</div>

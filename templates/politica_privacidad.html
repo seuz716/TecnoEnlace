@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="mb-4 text-center">Política de Privacidad</h1>
+
+            <p class="lead text-justify">
+                En <strong>TuTiendaOnline</strong> nos comprometemos a proteger la información personal de nuestros clientes, de conformidad con lo establecido por la <strong>Ley 1581 de 2012</strong> y demás normas que regulan el derecho al habeas data en Colombia.
+            </p>
+
+            <h4 class="mt-4">1. Responsable del Tratamiento de Datos</h4>
+            <p><strong>Nombre comercial:</strong> TuTiendaOnline<br>
+            <strong>Dirección:</strong> Calle Ficticia #123, Bogotá, Colombia<br>
+            <strong>Email:</strong> ceanabad@gmail.com
+            <br>
+            <strong>Teléfono:</strong> +57 316 671 0912</p>
+
+            <h4 class="mt-4">2. Finalidad del Tratamiento</h4>
+            <p>
+                Los datos personales que recopilamos se utilizan para:
+                <ul>
+                    <li>Procesar tus pedidos y entregas.</li>
+                    <li>Realizar facturación y pagos.</li>
+                    <li>Enviar información promocional (si autorizas).</li>
+                    <li>Prestar soporte postventa y atención al cliente.</li>
+                    <li>Cumplir obligaciones legales y contractuales.</li>
+                </ul>
+            </p>
+
+            <h4 class="mt-4">3. Derechos del Titular</h4>
+            <p>Como titular de tus datos personales, tienes derecho a:</p>
+            <ul>
+                <li>Conocer, actualizar y rectificar tus datos personales.</li>
+                <li>Solicitar prueba de la autorización otorgada.</li>
+                <li>Revocar la autorización y/o solicitar la supresión del dato.</li>
+                <li>Presentar quejas ante la Superintendencia de Industria y Comercio.</li>
+            </ul>
+
+            <h4 class="mt-4">4. Seguridad de la Información</h4>
+            <p>
+                Aplicamos medidas técnicas, humanas y administrativas necesarias para garantizar la seguridad de tus datos y evitar su adulteración, pérdida, consulta, uso o acceso no autorizado.
+            </p>
+
+            <h4 class="mt-4">5. Transferencia y Uso Internacional</h4>
+            <p>
+                Tus datos no serán transferidos a terceros fuera del país, salvo que sea necesario para prestar un servicio (como pasarelas de pago), siempre bajo medidas de seguridad y confidencialidad adecuadas.
+            </p>
+
+            <h4 class="mt-4">6. Vigencia y Modificaciones</h4>
+            <p>
+                Esta política entra en vigor a partir de su publicación y podrá ser actualizada en cualquier momento. Las modificaciones estarán disponibles en esta misma página.
+            </p>
+
+            <div class="mt-5 text-center">
+                <a href="{% url 'contacto' %}" class="btn btn-primary btn-lg">
+                    Solicita la eliminación o actualización de tus datos
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+<!-- templates/500.html -->
+{% extends "base.html" %}
+
+{% block title %}Error del Servidor{% endblock %}
+
+{% block content %}
+<div class="container py-4 text-center">
+    <h1 class="display-4">500</h1>
+    <p class="lead">Ha ocurrido un error en el servidor. Por favor, inténtalo de nuevo más tarde.</p>
+    <a href="{% url 'productos:producto_client_list' %}" class="btn btn-primary">Volver a la tienda</a>
+</div>
+{% endblock %}
