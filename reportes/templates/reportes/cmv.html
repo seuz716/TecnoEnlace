@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Costo de Mercancía Vendida{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center text-primary mb-4">📦 Costo de Mercancía Vendida (CMV)</h2>
+
+  <div class="alert alert-info fw-semibold">
+    Total CMV: <span class="text-dark">${{ total_cmv }}</span>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>Fecha</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Costo Unitario</th>
+          <th>Costo Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in salidas %}
+        <tr>
+          <td>{{ m.fecha }}</td>
+          <td>{{ m.producto }}</td>
+          <td>{{ m.cantidad }}</td>
+          <td>${{ m.costo_unitario }}</td>
+          <td>${{ m.costo_total }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card mt-4 shadow-sm">
+    <div class="card-header bg-primary text-white">🤖 Análisis del Asistente IA</div>
+    <div class="card-body bg-dark">
+      <pre>{{ analisis }}</pre>
+    </div>
+  </div>
+</div>
+{% endblock %}

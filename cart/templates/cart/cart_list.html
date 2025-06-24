@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Tu Carrito{% endblock %}
 
@@ -112,115 +114,6 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const csrfToken = '{{ csrf_token }}';
-
-    document.querySelectorAll('tbody tr').forEach(row => {
-        row.addEventListener('mouseenter', () => row.classList.add('table-active'));
-        row.addEventListener('mouseleave', () => row.classList.remove('table-active'));
-    });
-
-    document.querySelectorAll('.quantity-btn').forEach(button => {
-        button.addEventListener('click', async (e) => {
-            const action = e.currentTarget.dataset.action;
-            const productId = e.currentTarget.dataset.productId;
-            const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
-            input.value = action === 'increment' ? parseInt(input.value) + 1 : Math.max(1, parseInt(input.value) - 1);
-            await updateCart(productId, input.value);
-        });
-    });
-
-    document.querySelectorAll('.quantity-input').forEach(input => {
-        input.addEventListener('change', async (e) => {
-            const productId = e.target.dataset.productId;
-            const value = Math.max(1, parseInt(e.target.value) || 1);
-            e.target.value = value;
-            await updateCart(productId, value);
-        });
-    });
-
-    document.querySelectorAll('.remove-item').forEach(button => {
-        button.addEventListener('click', async (e) => {
-            const productId = e.currentTarget.dataset.productId;
-            const row = e.currentTarget.closest('tr');
-            row.classList.add('animate__animated', 'animate__fadeOut');
-            await new Promise(resolve => setTimeout(resolve, 500));
-            await fetch(`/cart/remove/${productId}/`, {
-                method: 'POST',
-                headers: {'X-CSRFToken': csrfToken}
-            });
-            row.remove();
-            updateTotal();
-        });
-    });
-
-    document.getElementById('confirmCheckout').addEventListener('click', (e) => {
-        e.currentTarget.querySelector('.spinner-border').classList.remove('d-none');
-        e.currentTarget.disabled = true;
-    });
-
-    async function updateCart(productId, quantity) {
-        try {
-            const response = await fetch(`/cart/update/${productId}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({quantity})
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                document.querySelector(`.subtotal[data-product-id="${productId}"]`).textContent = `$ ${data.subtotal.toLocaleString()}`;
-                updateTotal();
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    function updateTotal() {
-        let total = 0;
-        document.querySelectorAll('.subtotal').forEach(element => {
-            const price = parseFloat(element.dataset.price);
-            const quantity = parseInt(element.closest('tr').querySelector('.quantity-input').value);
-            total += price * quantity;
-        });
-        document.getElementById('cart-total').textContent = total.toLocaleString();
-    }
-});
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        initDarkMode();
-    });
-
-</script>
-<style>
-
-.sticky-top {
-    top: -1px;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.modal-body {
-   color: blue;
-}
-
-.empty-cart {
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-</style>
 {% endblock %}

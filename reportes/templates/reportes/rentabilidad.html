@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Rentabilidad por Producto{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">📈 Rentabilidad por Producto</h2>
+
+ <canvas id="graficoRentabilidad" height="120" style="background-color: rgba(255, 255, 255, 0.8);" aria-label="Gráfico de rentabilidad" role="img"></canvas>
+
+  <table class="table table-hover mt-4">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Precio Venta</th>
+        <th>Costo Promedio</th>
+        <th>Margen</th>
+        <th>% Margen</th>
+        <th>Rentabilidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in productos %}
+      <tr>
+        <td>{{ p.nombre }}</td>
+        <td>${{ p.precio }}</td>
+        <td>${{ p.costo_promedio }}</td>
+        <td>${{ p.margen }}</td>
+        <td>{{ p.margen_porcentaje }}%</td>
+        <td>
+          {% if p.clasificacion == 'Alta' %}
+            <span class="badge bg-success">{{ p.clasificacion }}</span>
+          {% elif p.clasificacion == 'Media' %}
+            <span class="badge bg-warning">{{ p.clasificacion }}</span>
+          {% else %}
+            <span class="badge bg-danger">{{ p.clasificacion }}</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="card mt-5">
+    <div class="card-header bg-primary text-white">🤖 Análisis del Asistente IA</div>
+    <div class="card-body">
+      <pre class="p-2">{{ analisis }}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- Gráfico -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('graficoRentabilidad');
+const data = {
+  labels: [{% for p in productos %}"{{ p.nombre }}",{% endfor %}],
+  datasets: [{
+    label: '% Margen de Ganancia',
+    data: [{% for p in productos %}{{ p.margen_porcentaje }},{% endfor %}],
+    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+    borderColor: 'rgba(54, 162, 235, 1)',
+    borderWidth: 1
+  }]
+};
+new Chart(ctx, {
+  type: 'bar',
+  data: data,
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: { display: true, text: '% Margen' }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.raw + '%' } }
+    }
+  }
+});
+</script>
+{% endblock %}

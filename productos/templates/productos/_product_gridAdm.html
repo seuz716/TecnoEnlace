@@ -11,8 +11,14 @@
         </div>
         <div class="card-body d-flex flex-column">
             <h5 class="card-title fs-6 mb-2">{{ producto.nombre }}</h5>
-            <p class="card-text fw-bold text-primary mb-3">$ {{ producto.precio }}</p>
+            <p class="card-text fw-bold text-primary mb-3">Precio: $ {{ producto.precio }}</p>
+            <p class="card-text fw-bold text-primary mb-3">Costo: $ {{ producto.costo }}</p>
             <div class="mt-auto d-grid gap-2">
+                <a href="{% url 'reportes:kardex' producto.id %}" 
+                   class="btn btn-outline-info btn-sm rounded-pill">
+                   <i class="fas fa-file-alt me-1"></i> Kardex
+                </a>
+
                 <a href="{% url 'productos:producto-update' producto.pk %}" class="btn btn-sm btn-outline-warning">
                     <i class="fas fa-edit me-2"></i>Editar
                 </a>

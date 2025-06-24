@@ -1,3 +1,7 @@
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt  # si estás en desarrollo
+from django.utils.decorators import method_decorator
+import json
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -5,7 +9,7 @@ from django.http import JsonResponse
 from django.utils.http import urlencode
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db import transaction
-
+from django.views.decorators.http import require_POST
 from .models import Carrito, Pedido
 from productos.models import Producto
 
@@ -17,6 +21,42 @@ def get_session_key(request):
     if not request.session.session_key:
         request.session.create()
     return request.session.session_key
+
+
+
+@require_POST
+def actualizar_cantidad(request, producto_id):
+    try:
+        data = json.loads(request.body.decode('utf-8'))  # Decodificar body JSON
+        cantidad = int(data.get('cantidad', 1))
+        if cantidad < 1:
+            cantidad = 1
+
+        session_key = get_session_key(request)
+        item = Carrito.objects.get(session_key=session_key, producto_id=producto_id)
+
+        item.cantidad = cantidad
+        item.save()
+
+        subtotal = item.subtotal
+        total = sum(i.subtotal for i in Carrito.objects.filter(session_key=session_key))
+
+        return JsonResponse({
+            'success': True,
+            'subtotal': subtotal,
+            'total': total,
+        })
+
+    except Carrito.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Producto no encontrado'}, status=404)
+
+    except Exception as e:
+        print("💥 ERROR:", str(e))  # Imprime error en consola
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+
+
 
 
 def construir_mensaje_pedido(carrito_items, pedido=None):

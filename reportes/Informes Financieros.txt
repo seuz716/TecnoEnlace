@@ -1,0 +1,51 @@
+Informes Financieros
+
+    Valoración de Inventario Actual:
+        Descripción: Muestra el valor total del inventario disponible, calculado multiplicando el stock actual de cada producto por su costo unitario promedio (o el costo más reciente si usas un método FIFO/LIFO).
+        Utilidad: Proporciona una instantánea del capital inmovilizado en inventario y es crucial para los estados financieros.
+
+    Rentabilidad por Producto:
+        Descripción: Calcula el margen de ganancia por cada producto, comparando el precio de venta con el costo unitario promedio.
+        Utilidad: Identifica qué productos son más rentables y cuáles necesitan revisión de precios o costos.
+
+    Costo de Mercancía Vendida (CMV):
+        Descripción: Suma de los costos unitarios de los productos que han salido del inventario (ventas).
+        Utilidad: Fundamental para el cálculo de la utilidad bruta en el estado de resultados.
+
+    Historial de Costos por Producto:
+        Descripción: Detalla cómo ha variado el costo unitario de un producto a lo largo del tiempo, basándose en los costo_unitario de los movimientos de entrada.
+        Utilidad: Ayuda a entender las tendencias de precios de compra y a negociar mejor con proveedores.
+
+Informes Administrativos y de Inventarios
+
+    Inventario Actual (Stock Disponible):
+        Descripción: Lista de todos los productos con su cantidad disponible actual (calculada desde el stock property).
+        Utilidad: Permite saber qué hay en almacén y planificar futuras compras o producción.
+
+    Rotación de Inventario:
+        Descripción: Calcula cuántas veces se vende y reemplaza el inventario en un período dado. Se puede estimar dividiendo el costo de las ventas por el inventario promedio.
+        Utilidad: Indica la eficiencia con la que se gestiona el inventario; una alta rotación suele ser deseable.
+
+    Productos Bajos en Stock (Punto de Reorden):
+        Descripción: Identifica productos cuyo stock actual está por debajo de un umbral predefinido (tendrías que añadir un campo para esto en Producto).
+        Utilidad: Alerta sobre la necesidad de reabastecimiento para evitar desabastecimientos.
+
+    Historial de Movimientos por Producto:
+        Descripción: Un informe detallado de todas las entradas y salidas de un producto específico, incluyendo cantidades, fechas y observaciones.
+        Utilidad: Proporciona trazabilidad completa de los movimientos de cada artículo, útil para resolver discrepancias.
+
+Informes de Auditoría
+
+    Conciliación de Movimientos de Inventario:
+        Descripción: Compara la suma de entradas menos la suma de salidas de un período específico con el cambio neto en el stock del mismo período. Ayuda a identificar errores o inconsistencias.
+        Utilidad: Esencial para asegurar la integridad de los datos de inventario y detectar posibles fraudes o errores de registro.
+
+    Actividad de Movimientos por Usuario (si implementas usuarios):
+        Descripción: Si añades un campo de usuario a MovimientoInventario, este informe mostraría quién realizó cada movimiento de inventario, incluyendo la fecha y hora de registro del sistema (fecha).
+        Utilidad: Mejora la rendición de cuentas y la seguridad, permitiendo auditar la actividad del personal relacionada con el inventario.
+
+Consideraciones Adicionales:
+
+    Periodo de Tiempo: La mayoría de estos informes se benefician de la capacidad de filtrar por un rango de fechas (usando fecha_transaccion o fecha).
+    Agrupaciones: Muchos informes ganan valor si se pueden agrupar por Categoría de producto o incluso por Tipo de movimiento.
+    Visualización: Considera usar gráficos (barras, líneas, etc.) para hacer que algunos de estos informes sean más comprensibles a primera vista, especialmente los financieros y de rotación.

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>📊 Valoración de Inventario Actual</h2>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Stock</th>
+        <th>Costo Unitario</th>
+        <th>Valor Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in productos %}
+      <tr>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.stock }}</td>
+        <td>${{ p.costo_unitario }}</td>
+        <td>${{ p.valor_total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr class="fw-bold bg-light">
+        <td colspan="3" class="text-end">Valor total del inventario:</td>
+        <td>${{ total_valor_inventario|floatformat:2 }}</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <hr>
+  <h4>🤖 Análisis de Gemini</h4>
+  <div class="alert alert-info" style="white-space: pre-line;">
+    {{ analisis_ia }}
+  </div>
+</div>
+{% endblock %}

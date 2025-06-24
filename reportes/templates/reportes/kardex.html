@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Kardex - {{ producto.nombre }}</h2>
+  <a href="{% url 'inventario:lista' %}" class="btn btn-secondary mb-3">← Volver</a>
+
+  <!-- Tabla de movimientos -->
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Costo Unitario</th>
+        <th>Total</th>
+        <th>Saldo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mov in movimientos %}
+      <tr>
+        <td>{{ mov.fecha }}</td>
+        <td>{{ mov.tipo }}</td>
+        <td>{{ mov.cantidad }}</td>
+        <td>${{ mov.costo_unitario }}</td>
+        <td>${{ mov.costo_total }}</td>
+        <td>{{ mov.saldo }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No hay movimientos para este producto.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Resumen automático con Gemini -->
+  <div class="card mt-5 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-robot me-2"></i> Análisis Inteligente (IA)</h5>
+    </div>
+    <div class="card-body">
+      <pre style="white-space: pre-wrap;">{{ analisis_ia }}</pre>
+    </div>
+  </div>
+</div>
+{% endblock %}

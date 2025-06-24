@@ -1,128 +1,99 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <img src="{% static 'images/logo.png' %}" alt="Logo" width="40" height="40" class="d-inline-block align-top me-2 logo-hover" loading="lazy">
-            Tienda Online
-        </a>
 
-        <div class="d-flex align-items-center">
-            <button class="btn btn-link text-light me-3" id="darkModeToggle" aria-label="Activar modo oscuro">
-                <i class="fas fa-moon"></i>
-            </button>
+<!-- NAVBAR TECNOLOGICA FUTURISTA -->
+<nav class="navbar navbar-expand-lg fixed-top futuristic-navbar">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center neon-brand" href="/">
+      <img src="{% static 'images/logo.png' %}" alt="Tecno Enlace Logo" width="40" height="40" class="me-2 futuristic-logo">
+      <span>Tecno Enlace</span>
+    </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
+    <div class="d-flex align-items-center">
+      <button class="btn btn-outline-neon me-3" id="darkModeToggle" aria-label="Modo Oscuro">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-            <!-- Búsqueda Global con Autocomplete -->
-                <form class="d-flex ms-lg-auto me-lg-3 my-2 my-lg-0" role="search" id="initGlobalSearch">
-    <div class="input-group search-group">
-        <input type="search" 
-               class="form-control search-input" 
-               placeholder="Buscar productos..." 
-               aria-label="Buscar"
-               id="globalSearch"
-               data-url="{% url 'productos:filtrar_productos' %}" 
-               autocomplete="off"
-               loading="lazy">
-        <button class="btn btn-outline-light search-button" type="submit" aria-label="Buscar">
-            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-            <i class="fas fa-search"></i>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <form class="d-flex ms-auto me-3 futuristic-search" role="search" id="initGlobalSearch">
+        <input type="search" class="form-control futuristic-input" placeholder="🔎 Buscar..." id="globalSearch" data-url="{% url 'productos:filtrar_productos' %}" autocomplete="off">
+        <button class="btn btn-neon" type="submit">
+          <i class="fas fa-search"></i>
         </button>
-        <div class="autocomplete-results shadow" id="initGlobalSearch"></div>
-    </div>
-</form>
+      </form>
 
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="fas fa-filter me-1"></i> Categorías
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark neon-dropdown">
+            {% for categoria in categorias %}
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="?categoria={{ categoria.slug }}">
+                <i class="{{ categoria.icono }} me-2"></i>{{ categoria.nombre }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link position-relative" href="/cart/">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge bg-danger ms-1 pulse" id="cartCount">0</span>
+          </a>
+        </li>
+      </ul>
 
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-filter me-1"></i>Categorías
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        {% for categoria in categorias %}
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="?categoria={{ categoria.slug }}">
-                                <i class="{{ categoria.icono }} me-2"></i>
-                                <span>{{ categoria.nombre }}</span>
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link position-relative" href="/cart/" aria-label="Carrito de compras">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="badge bg-danger ms-1 pulse cart-count-indicator" id="cartCount">0</span>
-                    </a>
-                </li>
-            </ul>
-
-            <div class="navbar-nav ms-lg-3">
-                {% if user.is_authenticated %}
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle me-2"></i>
-                        {{ user.username }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <form action="{% url 'logout' %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="dropdown-item">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-
-                {% if user.is_staff %}
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-tools me-1"></i>Administración
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'productos:producto-list' %}">
-                                <i class="fas fa-box-open me-2"></i>Ver Productos
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'productos:producto-create' %}">
-                                <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'productos:categoria-list' %}">
-                                <i class="fas fa-tags me-2"></i>Ver Categorías
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'productos:categoria-create' %}">
-                                <i class="fas fa-folder-plus me-2"></i>Nueva Categoría
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                {% endif %}
-                {% else %}
-                <a class="nav-link" href="{% url 'login' %}">
-                    <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                </a>
-                {% endif %}
-            </div>
+      <div class="navbar-nav ms-lg-3">
+        {% if user.is_authenticated %}
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="fas fa-user-circle me-2"></i>{{ user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end neon-dropdown">
+            <li>
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item">
+                  <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                </button>
+              </form>
+            </li>
+          </ul>
         </div>
+        {% if user.is_staff %}
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <i class="fas fa-tools me-1"></i> Administración
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark neon-dropdown">
+            <li><a class="dropdown-item" href="{% url 'productos:producto-list' %}"><i class="fas fa-box-open me-2"></i> Ver Productos</a></li>
+            <li><a class="dropdown-item" href="{% url 'productos:producto-create' %}"><i class="fas fa-plus-circle me-2"></i> Nuevo Producto</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'productos:categoria-list' %}"><i class="fas fa-tags me-2"></i> Ver Categorías</a></li>
+            <li><a class="dropdown-item" href="{% url 'productos:categoria-create' %}"><i class="fas fa-folder-plus me-2"></i> Nueva Categoría</a></li>
+          </ul>
+        </div>
+        {% endif %}
+        {% else %}
+        <a class="nav-link neon-brand" href="{% url 'login' %}">
+          <i class="fas fa-sign-in-alt me-2"></i> Iniciar Sesión
+        </a>
+        {% endif %}
+      </div>
     </div>
+  </div>
 </nav>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        initCart();
-        setupCartSync();
-    });
-</script>
+<!-- ESTILOS FUTURISTAS -->
+<style>
+
+</style>
+
+<!-- EFECTOS JS: GLOW RANDOM AL PASAR EL CURSOR -->
+
+

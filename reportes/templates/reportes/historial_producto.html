@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Historial de {{ producto.nombre }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">📄 Historial de Movimientos: {{ producto.nombre }}</h2>
+
+  <div class="table-responsive bg-white shadow p-3 rounded">
+    <table class="table table-striped">
+      <thead class="table-info">
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Costo Unitario</th>
+          <th>Costo Total</th>
+          <th>Observaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in movimientos %}
+        <tr>
+          <td>{{ m.fecha_transaccion }}</td>
+          <td>
+            <span class="badge {% if m.tipo == 'entrada' %}bg-success{% else %}bg-danger{% endif %}">
+              {{ m.get_tipo_display }}
+            </span>
+          </td>
+          <td>{{ m.cantidad }}</td>
+          <td>${{ m.costo_unitario }}</td>
+          <td>${{ m.cantidad|floatformat:2|add:""|add:m.costo_unitario|floatformat:2 }}</td>
+          <td>{{ m.observaciones }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="card mt-5 shadow-sm">
+  <div class="card-header bg-primary text-white">🤖 Análisis del Asistente IA</div>
+  <div class="card-body">
+    <pre style="white-space: pre-wrap;">{{ analisis_ia }}</pre>
+  </div>
+</div>
+  </div>
+</div>
+{% endblock %}

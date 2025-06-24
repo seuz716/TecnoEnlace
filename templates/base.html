@@ -1,145 +1,155 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="es" class="h-100">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tienda Online - Los mejores productos al mejor precio">
-    <title>{% block title %}Tienda Online{% endblock %}</title>
-    
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
-    <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tecno Enlace - Accesorios tecnológicos al mejor precio" />
+  <title>{% block title %}Tecno Enlace{% endblock %}</title>
+  {% block extra_css %}{% endblock %}
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon" />
+
+  <!-- Bootstrap JS y dependencias -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS Personalizado -->
+  <script src="{% static 'js/scripts.js' %}"></script>
+
+  
 </head>
-<body class="d-flex flex-column h-100">
-    <!-- Navbar Moderno -->
-    {% include 'includes/navbar.html' %}
 
-    <!-- Definición global para la URL de detalle -->
-    <script>
-        const baseDetailUrl = "{% url 'productos:producto-detail' 0 %}".replace('/0/', '/');
-    </script>
+<body class="d-flex flex-column min-vh-100">
 
-    <!-- Contenido Principal -->
-    <main class="flex-shrink-0" style="padding-top: 5%;">
-        <div class="container py-4">
-            {% block content %}{% endblock %}
-            <!-- Contenedor donde se mostrarán los resultados de la búsqueda -->
-            <div class="row" id="productGrid"></div>
+  <!-- NAVBAR -->
+  {% include 'includes/navbar.html' %}
+
+  <!-- Script base para URLs dinámicas -->
+  <script>
+    const baseDetailUrl = "{% url 'productos:producto-detail' 0 %}".replace('/0/', '/');
+  </script>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow-1 py-4 py-md-5">
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-light text-center py-3 mt-auto">
+    {% include 'includes/footer.html' %}
+  </footer>
+
+  <!-- BOTÓN FLOTANTE CARRITO -->
+  <a href="{% url 'cart:list' %}" class="btn btn-neon-float boton-flotante shadow-lg">
+    <i class="fas fa-shopping-basket me-2"></i>
+    <span class="texto-pedido">Hacer Pedido</span>
+  </a>
+
+  <!-- BOTÓN VOLVER ARRIBA -->
+  <button class="btn btn-primary scroll-top shadow rounded-circle position-fixed end-3" style="z-index: 1050;" aria-label="Volver arriba">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- BOTÓN FLOTANTE CHAT -->
+  <button id="toggleChatBtn" class="btn btn-primary rounded-circle shadow position-fixed" style="bottom: 160px; right: 20px; z-index: 10000; width: 60px; height: 60px;">
+    <i class="bi bi-chat-dots fs-4"></i>
+  </button>
+
+  <!-- CHAT FLOTANTE -->
+  <div id="chatPopup" class="chat-popup">
+    <div class="chat-header">
+      <i class="bi bi-question-circle me-2"></i>Asistente IA
+    </div>
+    <div class="chat-body p-3">
+      <form id="chatForm">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="pregunta" class="form-label small">Haz tu pregunta sobre nuestros productos:</label>
+          <input type="text" name="pregunta" id="pregunta" class="form-control" placeholder="Ej: ¿Este producto es apto para gatos?" required />
         </div>
-    </main>
-
-    <!-- Footer Profesional -->
-    <footer class="footer mt-auto bg-dark text-light py-4">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5 class="mb-3">Sobre Nosotros</h5>
-                    <p class="text-decoration-none text-secondary">Tienda Online líder en productos de calidad con entrega rápida y servicio excepcional.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5 class="mb-3">Enlaces Rápidos</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/politica-privacidad/" class="text-decoration-none text-secondary">Política de Privacidad</a></li>
-                        <li><a href="/terminos-servicio/" class="text-decoration-none text-secondary">Términos de Servicio</a></li>
-                        <li><a href="/contacto/" class="text-decoration-none text-secondary">Contacto</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5 class="mb-3">Redes Sociales</h5>
-                    <div class="social-links">
-                        <a href="#" class="text-secondary me-3"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-secondary me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-secondary me-3"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4">
-            <p class="text-center text-muted mb-0">&copy; 2025 Tienda Online. Todos los derechos reservados.</p>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-send">
+            <i class="bi bi-send"></i> Preguntar
+          </button>
         </div>
-    </footer>
+      </form>
+      <div id="respuestaIA" class="alert alert-info mt-3 d-none">
+        <strong><i class="bi bi-robot"></i> Respuesta:</strong>
+        <p id="respuestaTexto" class="mb-0"></p>
+      </div>
+    </div>
+  </div>
 
-    <!-- Scroll to Top -->
-    <button class="btn btn-primary scroll-top shadow" aria-label="Volver arriba">
-        <i class="fas fa-chevron-up"></i>
-    </button>
 
-    <!-- Toast Container -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/scripts.js' %}"></script>
-    
-    <!-- Script de búsqueda en tiempo real -->
-    <script>
-    /* Búsqueda en tiempo real (versión con API) */
-    function initRealTimeSearch() {
-        const searchInput = document.getElementById('globalSearch');
-        if (!searchInput) return;
-        const debounce = (func, delay) => {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func(...args), delay);
-            };
-        };
-        const performSearch = debounce(async (query) => {
-    try {
-        const response = await fetch(`/buscar/?search=${encodeURIComponent(query)}`);
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        const data = await response.json();
-        const productGrid = document.getElementById('productGrid');
-        if (productGrid) {
-            productGrid.innerHTML = data.results.map(producto => `
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <div class="ratio ratio-1x1">
-                            <img src="${producto.imagen}" 
-                                 class="card-img-top object-fit-cover" 
-                                 alt="${producto.nombre}" loading="lazy">
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title fs-6">${producto.nombre}</h5>
-                            <p class="card-text fw-bold text-primary">$${producto.precio}</p>
-                            <a href="${baseDetailUrl}${producto.id}/" class="btn btn-sm btn-outline-info">
-                                <i class="fas fa-info-circle me-2"></i> Detalles
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-    } catch (error) {
-        console.error('Error en la búsqueda:', error);
-    }
-}, 300);
+  <!-- TOASTS -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
-        searchInput.addEventListener('input', (e) => {
-            performSearch(e.target.value);
-        });
-    }
-    initRealTimeSearch();
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            initCart();
-            setupCartSync();
-        });
-    </script>
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="{% static 'js/scripts.js' %}" defer></script>
 
 </body>
 </html>
+
+<script> 
+ document.addEventListener('DOMContentLoaded', function () {
+      const toggleChatBtn = document.getElementById('toggleChatBtn');
+      const chatPopup = document.getElementById('chatPopup');
+      const chatForm = document.getElementById('chatForm');
+      const respuestaIA = document.getElementById('respuestaIA');
+      const respuestaTexto = document.getElementById('respuestaTexto');
+
+      toggleChatBtn.addEventListener('click', () => {
+        chatPopup.style.display = chatPopup.style.display === 'block' ? 'none' : 'block';
+      });
+
+      chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(chatForm);
+        fetch("{% url 'ia:chat' %}", {
+          method: "POST",
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+          },
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.respuesta) {
+            respuestaTexto.textContent = data.respuesta;
+            respuestaIA.classList.remove('d-none');
+          } else {
+            respuestaTexto.textContent = "No se recibió respuesta.";
+            respuestaIA.classList.remove('d-none');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          respuestaTexto.textContent = "Ocurrió un error al procesar tu pregunta.";
+          respuestaIA.classList.remove('d-none');
+        });
+      });
+    });
+
+</script> 

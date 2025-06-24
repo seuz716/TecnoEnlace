@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Movimientos de Inventario</h2>
+  <a href="{% url 'inventario:crear' %}" class="btn btn-primary mb-3">Nuevo Movimiento</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Costo Unitario</th>
+        <th>Unidades</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mov in movimientos %}
+      <tr>
+        <td>{{ mov.fecha|date:"Y-m-d H:i" }}</td>
+        <td>{{ mov.producto.nombre }}</td>
+        <td>{{ mov.get_tipo_display }}</td>
+        <td>{{ mov.cantidad }}</td>
+        <td>${{ mov.costo_unitario }}</td>
+        <td>{{ mov.producto.stock }}</td>
+
+        <td>${{ mov.cantidad|floatformat:2|add:0|floatformat:2|floatformat }} x ${{ mov.costo_unitario }} = ${{ mov.cantidad|floatformat:2|add:0|floatformat|floatformat }} * {{ mov.costo_unitario }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No hay movimientos registrados aún.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

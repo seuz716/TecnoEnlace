@@ -13,9 +13,15 @@ body {
     font-family: 'Poppins', sans-serif;
     padding-top: 80px;
     background-color: var(--bg-light);
+    background-image: url("../images/fondo.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: var(--text-dark);
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
+
 
 body.dark-mode {
   background-color: #121212;
@@ -54,6 +60,53 @@ body.dark-mode .dropdown-item {
 
 .pulse {
     animation: pulse 1.5s infinite;
+}
+
+/* Fondo con diseño de circuito */
+.navbar-circuit-bg {
+    background-color: #0a0f2c;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0V100M0 50H100M25 0V100M75 0V100M0 25H100M0 75H100' stroke='%2300ffff' stroke-opacity='0.06' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 200px;
+    background-repeat: repeat;
+    backdrop-filter: blur(3px);
+    box-shadow: 0 2px 8px rgba(0, 255, 255, 0.1);
+}
+
+/* Logo animado al pasar el cursor */
+.logo-hover:hover {
+    transform: rotate(-5deg) scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Texto con brillo sutil */
+.text-glow {
+    color: #00ffe7;
+    text-shadow: 0 0 4px #00ffe7, 0 0 10px rgba(0, 255, 255, 0.2);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Input de búsqueda estilizado */
+.search-input {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.search-input::placeholder {
+    color: #ccc;
+}
+
+/* Botón de búsqueda */
+.search-button {
+    border-left: none;
+}
+
+/* Autocomplete fondo oscuro */
+.autocomplete-results {
+    background-color: #1e1e1e;
+    color: #fff;
+    z-index: 3000;
 }
 
 /* Navbar */
@@ -246,3 +299,176 @@ body.dark-mode .dropdown-menu {
 body.dark-mode a {
     color: #82cfff;
 }
+
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-mode .navbar,
+.dark-mode .dropdown-menu {
+  background-color: #1a1a1a !important;
+}
+
+.dark-mode .form-control {
+  background-color: #2c2c2c;
+  color: white;
+  border-color: #555;
+}
+
+
+.sticky-top {
+    top: -1px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.modal-body {
+   color: blue;
+}
+
+.empty-cart {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.futuristic-navbar {
+  background: radial-gradient(circle at top left, #0f0f0f, #1a1a1a);
+  border-bottom: 2px solid #00f0ff;
+  box-shadow: 0 0 30px rgba(0, 255, 247, 0.2);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.neon-brand {
+  color: #00f0ff !important;
+  text-shadow: 0 0 6px #00f0ff, 0 0 15px #00f0ff;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.neon-brand:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+}
+
+.futuristic-logo {
+  filter: drop-shadow(0 0 8px #00f0ff);
+}
+
+.btn-neon {
+  background-color: transparent;
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  transition: all 0.3s ease;
+}
+
+.btn-neon:hover {
+  background-color: #00f0ff;
+  color: #0f0f0f;
+  box-shadow: 0 0 15px #00f0ff;
+}
+
+.btn-outline-neon {
+  color: #00f0ff;
+  border: none;
+  font-size: 1.2rem;
+}
+
+.futuristic-input {
+  background-color: #1c1c1c;
+  border: 1px solid #00f0ff;
+  color: #00fff7;
+}
+
+.futuristic-input:focus {
+  background-color: #000;
+  box-shadow: 0 0 10px #00f0ff;
+  color: #00fff7;
+}
+
+.neon-dropdown {
+  background-color: #111;
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.neon-dropdown .dropdown-item {
+  color: #ccc;
+  transition: all 0.2s ease;
+}
+
+.neon-dropdown .dropdown-item:hover {
+  background-color: #00f0ff;
+  color: #000;
+  text-shadow: 0 0 10px #000;
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+
+  .chat-popup {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      max-width: 350px;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      display: none;
+  
+    }@media (min-width: 768px) {
+    .chat-body {
+        max-height: 400px;
+      }
+    }
+
+
+
+    .chat-body {
+      max-height: 300px; /* Ajusta según lo que necesites */
+      overflow-y: auto;
+      padding: 16px;
+      scroll-behavior: smooth;
+    }
+
+    @media (max-width: 576px) {
+      .chat-popup {
+        right: 10px;
+        left: 10px;
+        bottom: 80px;
+        max-width: none;
+      }
+    }
+
+    .chat-header {
+      background-color: #0d6efd;
+      color: white;
+      padding: 12px 16px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      font-weight: bold;
+    }
+
+    .btn-send {
+      background-color: #0d6efd;
+      color: white;
+    }
+
+    .scroll-top {
+      bottom: 100px;
+    }

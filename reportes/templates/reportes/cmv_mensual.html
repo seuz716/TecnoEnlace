@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Informe Mensual de CMV{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">📦 Informe Mensual de Costo de Mercancía Vendida (CMV)</h2>
+
+  <!-- Filtro por producto -->
+  <form method="get" class="row g-3 align-items-center mb-4">
+    <div class="col-auto">
+      <label for="producto" class="form-label">Selecciona un producto:</label>
+    </div>
+    <div class="col-auto">
+      <select class="form-select" name="producto" id="producto" onchange="this.form.submit()">
+        <option value="">Todos</option>
+        {% for prod in productos %}
+          <option value="{{ prod.id }}" {% if producto_seleccionado and prod.id == producto_seleccionado.id %}selected{% endif %}>
+            {{ prod.nombre }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+
+  <!-- Tabla de resultados -->
+  <div class="table-responsive shadow rounded bg-white p-3">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th>Periodo</th>
+          <th>Compras (Entradas)</th>
+          <th>Ventas (Salidas)</th>
+          <th>CMV</th>
+          <th>Ingresos</th>
+          <th>Utilidad Bruta</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reporte %}
+        <tr>
+          <td>{{ r.periodo }}</td>
+          <td>${{ r.compras }}</td>
+          <td>${{ r.ventas }}</td>
+          <td>${{ r.cmv }}</td>
+          <td>${{ r.ingresos }}</td>
+          <td>
+            <span class="badge {% if r.utilidad_bruta > 0 %}bg-success{% else %}bg-danger{% endif %}">
+              ${{ r.utilidad_bruta }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Gráfico -->
+  <canvas id="graficoCMV" class="mt-5" height="100" style="background-color: rgba(255,255,255,0.7); border-radius: 12px;"></canvas>
+</div>
+<div class="card mt-5 shadow-sm">
+  <div class="card-header bg-info text-white">
+    🤖 Análisis del Asistente IA
+  </div>
+  <div class="card-body">
+    <pre style="white-space: pre-wrap;">{{ analisis_ia }}</pre>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('graficoCMV');
+const data = {
+  labels: [{% for r in reporte %}"{{ r.periodo }}",{% endfor %}],
+  datasets: [
+    {
+      label: 'Ingresos',
+      data: [{% for r in reporte %}{{ r.ingresos }},{% endfor %}],
+      backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 2
+    },
+    {
+      label: 'CMV',
+      data: [{% for r in reporte %}{{ r.cmv }},{% endfor %}],
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2
+    },
+    {
+      label: 'Utilidad Bruta',
+      data: [{% for r in reporte %}{{ r.utilidad_bruta }},{% endfor %}],
+      backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 2
+    }
+  ]
+};
+new Chart(ctx, {
+  type: 'bar',
+  data: data,
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    scales: {
+      y: { beginAtZero: true }
+    },
+    plugins: {
+      tooltip: { mode: 'index', intersect: false },
+      legend: { position: 'top' }
+    }
+  }
+});
+</script>
+{% endblock %}

@@ -17,6 +17,8 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 # Hosts permitidos (separados por comas en .env)
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
+os.environ["GEMINI_API_KEY"] = os.getenv("GEMINI_API_KEY")
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,10 +29,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'widget_tweaks',
+    'reportes',
 
     # Apps del proyecto
     'productos',
-    'cart',  
+    'cart',
+    'empresas',
+    'inventario',
+    'ia',  
 ]
 
 MIDDLEWARE = [

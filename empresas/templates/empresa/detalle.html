@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <h2>{{ object.nombre_establecimiento }}</h2>
+  <p><strong>Teléfono:</strong> {{ object.telefono }}</p>
+  <p><strong>Correo:</strong> {{ object.correo }}</p>
+  <p><strong>Dirección:</strong> {{ object.direccion }}</p>
+  {% if object.logo %}
+    <img src="{{ object.logo.url }}" style="max-height: 150px;">
+  {% endif %}
+  <a href="{% url 'empresa:empresa-editar' %}" class="btn btn-warning mt-3">Editar</a>
+</div>
+{% endblock %}

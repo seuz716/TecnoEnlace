@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Productos Bajo Stock{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">🚨 Productos por Debajo del Punto de Reorden</h2>
+
+  <table class="table table-bordered table-hover bg-white shadow">
+    <thead class="table-danger">
+      <tr>
+        <th>Producto</th>
+        <th>Categoría</th>
+        <th>Stock Actual</th>
+        <th>Punto de Reorden</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in productos_bajos %}
+      <tr>
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.categoria }}</td>
+        <td>{{ p.stock }}</td>
+        <td>{{ p.punto_reorden }}</td>
+        <td>${{ p.precio }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="card mt-5 shadow-sm">
+    <div class="card-header bg-danger text-white">🤖 Análisis del Asistente IA</div>
+    <div class="card-body">
+      <pre style="white-space: pre-wrap;">{{ analisis_ia }}</pre>
+    </div>
+  </div>
+</div>
+{% endblock %}

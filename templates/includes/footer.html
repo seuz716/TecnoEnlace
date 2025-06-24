@@ -1,28 +1,171 @@
-<footer class="footer mt-auto bg-dark text-light py-4">
-  <div class="container">
-    <div class="row g-4">
+{% load static %}
+<!-- FOOTER TECNOLÓGICO FUTURISTA -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<footer class="footer-futurista text-light py-5 mt-auto position-relative">
+  <canvas id="footerCanvas" class="position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;"></canvas>
+
+  <div class="container position-relative" style="z-index: 2;">
+    <div class="row g-5">
       <div class="col-md-4">
-        <h5 class="mb-3">Sobre Nosotros</h5>
-        <p class="text-muted">Tienda Online líder en productos de calidad con entrega rápida y servicio excepcional.</p>
+        <h5 class="text-glow mb-3">🚀 <span class="footer-heading">Sobre Nosotros</span></h5>
+        <p class="footer-text">Somos una comunidad tech conectando ideas con innovación. 🌐 Donde el futuro se encuentra con el presente.</p>
       </div>
       <div class="col-md-4">
-        <h5 class="mb-3">Enlaces Rápidos</h5>
+        <h5 class="text-glow mb-3">⚡ <span class="footer-heading">Enlaces Rápidos</span></h5>
         <ul class="list-unstyled">
-          <li><a href="/politica-privacidad/" class="text-decoration-none text-secondary">Política de Privacidad</a></li>
-          <li><a href="/terminos-servicio/" class="text-decoration-none text-secondary">Términos de Servicio</a></li>
-          <li><a href="/contacto/" class="text-decoration-none text-secondary">Contacto</a></li>
+          <li><a href="/politica-privacidad/" class="footer-link">🛡️ Política de Privacidad</a></li>
+          <li><a href="/terminos-servicio/" class="footer-link">📜 Términos de Servicio</a></li>
+          <li><a href="/contacto/" class="footer-link">📬 Contacto</a></li>
         </ul>
       </div>
       <div class="col-md-4">
-        <h5 class="mb-3">Redes Sociales</h5>
-        <div class="social-links">
-          <a href="#" class="text-secondary me-3"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="text-secondary me-3"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-secondary me-3"><i class="fab fa-twitter"></i></a>
+        <h5 class="text-glow mb-3">🌐 <span class="footer-heading">Síguenos</span></h5>
+        <div class="social-links d-flex">
+          <a href="#" class="footer-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="footer-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="footer-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
         </div>
       </div>
     </div>
-    <hr class="my-4">
-    <p class="text-center text-muted mb-0">&copy; 2024 Tienda Online. Todos los derechos reservados.</p>
+    <hr class="glow-line my-4">
+    <p class="text-center footer-text mb-0">&copy; 2024 <span class="text-glow">💻 Tecno Enlace</span>. Todos los derechos reservados.</p>
   </div>
 </footer>
+
+<!-- ESTILOS DEL FOOTER -->
+<style>
+.footer-futurista {
+  background: linear-gradient(135deg, #0d0d0d, #111c2f);
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  color: #e0f7fa;
+  border-top: 2px solid rgba(0, 255, 247, 0.1);
+  box-shadow: 0 -2px 20px rgba(0, 255, 247, 0.1);
+}
+
+.footer-heading {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  color: #00fff7;
+  text-transform: uppercase;
+}
+
+.text-glow {
+  color: #00fff7;
+  text-shadow: 0 0 8px #00fff7, 0 0 18px #00fff7;
+}
+
+.footer-text {
+  font-size: 0.95rem;
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
+.footer-link {
+  color: #bbbbbb;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+.footer-link:hover {
+  color: #00fff7;
+  text-shadow: 0 0 6px #00fff7;
+  transform: translateX(6px);
+}
+
+.footer-icon {
+  color: #bbbbbb;
+  margin-right: 20px;
+  font-size: 1.6rem;
+  transition: all 0.3s ease;
+}
+.footer-icon:hover {
+  color: #00fff7;
+  text-shadow: 0 0 10px #00fff7;
+  transform: scale(1.25);
+}
+
+.glow-line {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #00fff7, transparent);
+  opacity: 0.8;
+  box-shadow: 0 0 10px #00fff7;
+}
+
+@media (max-width: 767px) {
+  .footer-futurista {
+    text-align: center;
+  }
+  .footer-icon {
+    margin: 12px;
+  }
+}
+</style>
+
+<!-- ANIMACIÓN PARTICULAS + LÍNEAS TECNOLÓGICAS -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('footerCanvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+
+  function resizeCanvas() {
+    width = canvas.width = canvas.offsetWidth;
+    height = canvas.height = canvas.offsetHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  const particles = Array.from({ length: 70 }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    r: Math.random() * 1.5 + 0.5,
+    dx: (Math.random() - 0.5) * 0.3,
+    dy: (Math.random() - 0.5) * 0.3,
+  }));
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < 80) {
+          ctx.strokeStyle = "rgba(0, 255, 247, 0.05)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    drawConnections();
+    ctx.fillStyle = '#00fff7';
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+
+      if (p.x < 0 || p.x > width) p.dx *= -1;
+      if (p.y < 0 || p.y > height) p.dy *= -1;
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+});
+</script>

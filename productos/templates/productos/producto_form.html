@@ -20,7 +20,6 @@
                         <div class="row g-3">
                             <!-- Columna Izquierda -->
                             <div class="col-md-6">
-                                <!-- Información Básica -->
                                 <div class="mb-3">
                                     <label class="form-label">Nombre del Producto</label>
                                     {{ form.nombre }}
@@ -33,13 +32,21 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label class="form-label">Precio</label>
+                                    <label class="form-label">Precio de Venta</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
                                         {{ form.precio }}
                                     </div>
                                 </div>
-                                
+
+                                <div class="mb-3">
+                                    <label class="form-label">Costo Unitario</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        {{ form.costo }}
+                                    </div>
+                                </div>
+
                                 <div class="mb-3">
                                     <label class="form-label">Stock disponible</label>
                                     {{ form.stock }}
@@ -48,7 +55,6 @@
                             
                             <!-- Columna Derecha -->
                             <div class="col-md-6">
-                                <!-- Disponibilidad y Categoría -->
                                 <div class="mb-4 p-3 border rounded">
                                     <div class="form-check form-switch mb-3">
                                         {{ form.disponible }}
@@ -56,27 +62,26 @@
                                             Producto disponible
                                         </label>
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label class="form-label">Categoría</label>
                                         {{ form.categoria }}
                                     </div>
                                 </div>
-                                
-                                <!-- Imagen -->
+
                                 <div class="mb-3">
                                     <label class="form-label">Imagen del producto</label>
                                     {{ form.imagen }}
                                 </div>
                             </div>
-                            
-                            <!-- Campos Full Width -->
+
+                            <!-- Campos de ancho completo -->
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label">Descripción</label>
                                     {{ form.descripcion }}
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <label class="form-label">Características</label>
                                     {{ form.caracteristicas }}

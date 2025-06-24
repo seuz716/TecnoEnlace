@@ -1,0 +1,310 @@
+/* ===== Transiciones en la tabla ===== */
+.table-hover tbody tr {
+  transition: all 0.2s ease-in-out;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px);
+}
+
+/* ===== Botones Hover ===== */
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+  border-color: #6c757d;
+}
+
+/* ===== Iconos ===== */
+.fas.fa-tags,
+.fas.fa-plus-circle {
+  font-size: 1.2rem;
+}
+
+.fas.fa-box-open {
+  color: #ced4da;
+}
+
+/* ===== Toasts personalizados ===== */
+.toast {
+  opacity: 0.95;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.toast .toast-body i {
+  color: #fff;
+}
+
+/* ===== Modal ===== */
+.modal-header,
+.modal-footer {
+  background-color: #f8f9fa;
+}
+
+/* ===== Responsive Cards / Tablas ===== */
+@media (max-width: 768px) {
+  .table {
+    display: none;
+  }
+
+  .card.mb-3 .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .btn-group .btn {
+    margin-left: 5px;
+  }
+}
+
+@media (min-width: 769px) {
+  .d-block.d-md-none {
+    display: none !important;
+  }
+}
+
+/* ===== Paginación activa ===== */
+.page-item.active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* ===== Input de búsqueda ===== */
+#searchInput {
+  border-radius: 0.375rem;
+  transition: box-shadow 0.2s ease;
+}
+
+#searchInput:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* ===== BADGE DE CONTEO ===== */
+.badge-count {
+  font-size: 0.75rem;
+  background-color: #6c757d;
+  color: white;
+  padding: 0.35em 0.65em;
+  border-radius: 0.5rem;
+}
+
+/* ===== ESTILO FUTURISTA ===== */
+.futuristic-container {
+  font-family: 'Orbitron', sans-serif;
+  background-color: #0e0e0e;
+  color: #00f0ff;
+  height: 100%;
+}
+
+.futuristic-card {
+  background: linear-gradient(145deg, #111, #1a1a1a);
+  border: 1px solid #00f0ff44;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.futuristic-input {
+  background-color: #121212;
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  transition: box-shadow 0.3s ease;
+}
+.futuristic-input:focus {
+  box-shadow: 0 0 8px #00f0ff;
+}
+
+.futuristic-button {
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+.futuristic-button:hover {
+  background-color: #00f0ff;
+  color: #121212;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.futuristic-label {
+  color: #00f0ff;
+  text-shadow: 0 0 5px #00f0ff;
+}
+
+/* ===== NEÓN Y PRODUCTOS ===== */
+.shadow-neon {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.shadow-neon:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+}
+
+.producto-card {
+  background-color: #121212;
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+.producto-card:hover {
+  border-color: #00f0ff;
+}
+
+/* ===== BOTONES ===== */
+.btn-neon {
+  background-color: #00f0ff;
+  color: #0f0f0f;
+  border: none;
+  box-shadow: 0 0 5px #00f0ff;
+  transition: all 0.3s ease;
+}
+.btn-neon:hover {
+  box-shadow: 0 0 15px #00f0ff;
+  transform: scale(1.05);
+}
+
+.btn-neon-outline {
+  background: transparent;
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  transition: all 0.3s ease;
+}
+.btn-neon-outline:hover {
+  background-color: #00f0ff;
+  color: #0f0f0f;
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown-menu-dark {
+  background-color: #2c3034;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item {
+  transition: all 0.2s ease;
+}
+.dropdown-item:hover {
+  background-color: #3d4145;
+  transform: translateX(5px);
+}
+
+/* ===== SPINNER ===== */
+.spinner-grow {
+  width: 3rem;
+  height: 3rem;
+}
+
+.filter-spinner {
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 1;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s ease-in-out;
+}
+
+.card {
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ===== PRECIO CON EFECTO NEÓN ===== */
+.neon-price {
+  color: #00f0ff;
+  text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
+}
+
+/* ===== CATEGORÍA CON GLOW ===== */
+.bg-glow {
+  background-color: #0f0f0f;
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+/* ===== BOTÓN FLOTANTE ===== */
+.boton-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  border-radius: 40px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.btn-neon-float {
+  background-color: rgba(0, 255, 150, 0.15);
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+}
+
+.boton-flotante:hover {
+  transform: scale(1.05);
+  background-color: rgba(0, 255, 150, 0.3);
+}
+
+/* ===== RESPONSIVE BOTÓN FLOTANTE ===== */
+@media (max-width: 576px) {
+  .boton-flotante {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .boton-flotante .texto-pedido {
+    display: none;
+  }
+
+  .boton-flotante i {
+    font-size: 18px;
+  }
+}
+
+/* ===== ANIMACIÓN SCROLL (fade-in-up) ===== */
+.fade-in-up {
+  opacity: 1;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.fade-in-up.show {
+  opacity: 0;
+  transform: translateY(0);
+}
